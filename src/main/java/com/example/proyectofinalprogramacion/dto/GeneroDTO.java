@@ -1,8 +1,10 @@
 package com.example.proyectofinalprogramacion.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 public class GeneroDTO {
+    @JsonIgnore
     private int id_genero;
     public String nombre;
 

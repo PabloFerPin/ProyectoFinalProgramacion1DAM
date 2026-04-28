@@ -1,6 +1,9 @@
 package com.example.proyectofinalprogramacion.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class PlataformaDTO {
+    @JsonIgnore
     private Integer id_plataforma;
     private String nombre;
 
