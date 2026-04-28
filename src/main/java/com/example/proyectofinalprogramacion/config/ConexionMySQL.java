@@ -5,11 +5,11 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConexionMySQL {
-    private final String URL = "jdbc:mysql://shuttle.proxy.rlwy.net:42307/proyecto_final_programacion";
-    private final String USER = "root";
-    private final String PASSWORD = "KFqboggCrXFSoqDZZVXGMfyYYDTjRvYJ";
+    private static final String URL = "jdbc:mysql://shuttle.proxy.rlwy.net:42307/proyecto_final_programacion";
+    private static final String USER = "root";
+    private static final String PASSWORD = "KFqboggCrXFSoqDZZVXGMfyYYDTjRvYJ";
 
-    public Connection connect() {
+    public static Connection connect() {
         try {
             return DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (SQLException e) {
