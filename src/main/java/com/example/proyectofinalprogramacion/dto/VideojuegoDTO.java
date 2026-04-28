@@ -1,15 +1,17 @@
 package com.example.proyectofinalprogramacion.dto;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class VideojuegoDTO {
     private Integer id_videojuego;
-
     private String titulo;
     private String desarrolladora;
     private LocalDate fechaSalida;
     private Double horasJuagas;
     private Boolean completado;
+    private ArrayList<GeneroDTO> generos;
+    private ArrayList<PlataformaDTO> plataformas;
 
     public VideojuegoDTO() {
 
@@ -22,6 +24,17 @@ public class VideojuegoDTO {
         this.fechaSalida = fechaSalida;
         this.horasJuagas = horasJuagas;
         this.completado = completado;
+    }
+
+    public VideojuegoDTO(Integer id_videojuego, String titulo, String desarrolladora, LocalDate fechaSalida, Double horasJuagas, Boolean completado, ArrayList<GeneroDTO> generos, ArrayList<PlataformaDTO> plataformas) {
+        this.id_videojuego = id_videojuego;
+        this.titulo = titulo;
+        this.desarrolladora = desarrolladora;
+        this.fechaSalida = fechaSalida;
+        this.horasJuagas = horasJuagas;
+        this.completado = completado;
+        this.generos = generos;
+        this.plataformas = plataformas;
     }
 
     public Integer getId_videojuego() {
@@ -70,6 +83,22 @@ public class VideojuegoDTO {
 
     public void setCompletado(Boolean completado) {
         this.completado = completado;
+    }
+
+    public ArrayList<GeneroDTO> getGeneros() {
+        return generos;
+    }
+
+    public void setGeneros(ArrayList<GeneroDTO> generos) {
+        this.generos = generos;
+    }
+
+    public ArrayList<PlataformaDTO> getPlataformas() {
+        return plataformas;
+    }
+
+    public void setPlataformas(ArrayList<PlataformaDTO> plataformas) {
+        this.plataformas = plataformas;
     }
 
     @Override
