@@ -4,14 +4,17 @@ import com.example.proyectofinalprogramacion.config.ConexionMySQL;
 import com.example.proyectofinalprogramacion.entity.Genero;
 import com.example.proyectofinalprogramacion.entity.Plataforma;
 import com.example.proyectofinalprogramacion.entity.Videojuego;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 
+@Repository
 public class VideojuegoDAO {
-    public void insertarVideojuego(Videojuego objVideojuego) {
+    public int insertarVideojuego(Videojuego objVideojuego) {
         String sql = "INSERT INTO tabla_videojuegos (titulo, fecha_salida, horas_jugadas, completado, desarrolladora) VALUES (?, ?, ?, ?, ?)";
+        int idGenerado = 0;
 
-        try (Connection conn = ConexionMySQL.connect(); PreparedStatement pStat = conn.prepareStatement(sql)) {
+        try (Connection conn = ConexionMySQL.connect(); PreparedStatement pStat = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pStat.setString(1, objVideojuego.getTitulo());
             pStat.setObject(2, objVideojuego.getFechaSalida());
             pStat.setDouble(3, objVideojuego.getHorasJugadas());
@@ -19,16 +22,63 @@ public class VideojuegoDAO {
             pStat.setString(5, objVideojuego.getDesarrolladora());
 
             pStat.executeUpdate();
+
+            ResultSet rs = pStat.getGeneratedKeys();
+            while(rs.next()) {
+                idGenerado = rs.getInt(1);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return idGenerado;
     }
 
-    public void insertarPlataforma(Plataforma objPlataforma) {
+    public int insertarPlataforma(Plataforma objPlataforma) {
         String sql = "INSERT IGNORE INTO tabla_plataformas (nombre) VALUES (?)";
+        int idGenerado = 0;
+
+        try (Connection conn = ConexionMySQL.connect(); PreparedStatement pStat = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            pStat.setString(1, objPlataforma.getNombre());
+
+            pStat.executeUpdate();
+            ResultSet rs = pStat.getGeneratedKeys();
+            while(rs.next()) {
+                idGenerado = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return idGenerado;
+    }
+
+    public int insertarGenero(Genero objGenero) {
+        //GESTIONAR 1 Y 0 DEL ID
+        String sql = "INSERT IGNORE INTO tabla_generos (nombre) VALUES (?)";
+        int idGenerado = 0;
+
+        try (Connection conn = ConexionMySQL.connect(); PreparedStatement pStat = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            pStat.setString(1, objGenero.getNombre());
+
+            pStat.executeUpdate();
+            ResultSet rs = pStat.getGeneratedKeys();
+            while(rs.next()) {
+                idGenerado = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return idGenerado;
+    }
+
+    public void insertarVideojuegoGenero(int idVideojuego, int idGenero) {
+        String sql = "INSERT INTO tabla_videojuegos_generos (id_videojuego, id_genero) VALUES (?, ?)";
 
         try (Connection conn = ConexionMySQL.connect(); PreparedStatement pStat = conn.prepareStatement(sql)) {
-            pStat.setString(1, objPlataforma.getNombre());
+            pStat.setInt(1, idVideojuego);
+            pStat.setInt(1, idGenero);
 
             pStat.executeUpdate();
         } catch (SQLException e) {
@@ -36,11 +86,12 @@ public class VideojuegoDAO {
         }
     }
 
-    public void insertarGenero(Genero objGenero) {
-        String sql = "INSERT IGNORE INTO tabla_generos (nombre) VALUES (?)";
+    public void insertarVideojuegoPlataforma(int idVideojuego, int idPlataforma) {
+        String sql = "INSERT INTO tabla_videojuegos_plataformas (id_videojuego, id_plataforma) VALUES (?, ?)";
 
         try (Connection conn = ConexionMySQL.connect(); PreparedStatement pStat = conn.prepareStatement(sql)) {
-            pStat.setString(1, objGenero.getNombre());
+            pStat.setInt(1, idVideojuego);
+            pStat.setInt(1, idPlataforma);
 
             pStat.executeUpdate();
         } catch (SQLException e) {
