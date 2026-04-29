@@ -24,7 +24,7 @@ public class VideojuegoDAO {
             pStat.executeUpdate();
 
             ResultSet rs = pStat.getGeneratedKeys();
-            while(rs.next()) {
+            while (rs.next()) {
                 idGenerado = rs.getInt(1);
             }
         } catch (SQLException e) {
@@ -34,43 +34,80 @@ public class VideojuegoDAO {
         return idGenerado;
     }
 
-    public int insertarPlataforma(Plataforma objPlataforma) {
-        String sql = "INSERT IGNORE INTO tabla_plataformas (nombre) VALUES (?)";
-        int idGenerado = 0;
+//    public int insertarPlataforma(Plataforma objPlataforma) {
+//        String SQL = "INSERT IGNORE INTO tabla_plataformas (nombre) VALUES (?)";
+//        int idGenerado = 0;
+//
+//        try (Connection conn = ConexionMySQL.connect(); PreparedStatement pStat = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+//            pStat.setString(1, objPlataforma.getNombre());
+//
+//            pStat.executeUpdate();
+//            ResultSet rs = pStat.getGeneratedKeys();
+//            while(rs.next()) {
+//                idGenerado = rs.getInt(1);
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return idGenerado;
+//    }
 
-        try (Connection conn = ConexionMySQL.connect(); PreparedStatement pStat = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+    public int obtenerIdPlataforma(Plataforma objPlataforma) {
+        String sql = "SELECT id FROM tabla_plataformas WHERE nombre = ?";
+        int id = 0;
+
+        try (Connection conn = ConexionMySQL.connect(); PreparedStatement pStat = conn.prepareStatement(sql)) {
             pStat.setString(1, objPlataforma.getNombre());
 
-            pStat.executeUpdate();
-            ResultSet rs = pStat.getGeneratedKeys();
-            while(rs.next()) {
-                idGenerado = rs.getInt(1);
+            ResultSet rs = pStat.executeQuery();
+            while (rs.next()) {
+                id = rs.getInt("id");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return idGenerado;
+        return id;
     }
 
-    public int insertarGenero(Genero objGenero) {
-        //GESTIONAR 1 Y 0 DEL ID
-        String sql = "INSERT IGNORE INTO tabla_generos (nombre) VALUES (?)";
-        int idGenerado = 0;
+//    public int insertarGenero(Genero objGenero) {
+//        //GESTIONAR 1 Y 0 DEL ID
+//        String SQL = "INSERT IGNORE INTO tabla_generos (nombre) VALUES (?)";
+//        int idGenerado = 0;
+//
+//        try (Connection conn = ConexionMySQL.connect(); PreparedStatement pStat = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+//            pStat.setString(1, objGenero.getNombre());
+//
+//            pStat.executeUpdate();
+//            ResultSet rs = pStat.getGeneratedKeys();
+//            while(rs.next()) {
+//                idGenerado = rs.getInt(1);
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return idGenerado;
+//    }
 
-        try (Connection conn = ConexionMySQL.connect(); PreparedStatement pStat = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+    public int obtenerIdGenero(Genero objGenero) {
+        //GESTIONAR 1 Y 0 DEL ID
+        String sql = "SELECT id FROM tabla_generos WHERE nombre = ?";
+        int id = 0;
+
+        try (Connection conn = ConexionMySQL.connect(); PreparedStatement pStat = conn.prepareStatement(sql)) {
             pStat.setString(1, objGenero.getNombre());
 
-            pStat.executeUpdate();
-            ResultSet rs = pStat.getGeneratedKeys();
-            while(rs.next()) {
-                idGenerado = rs.getInt(1);
+            ResultSet rs = pStat.executeQuery();
+            while (rs.next()) {
+                id = rs.getInt("id");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return idGenerado;
+        return id;
     }
 
     public void insertarVideojuegoGenero(int idVideojuego, int idGenero) {
@@ -78,7 +115,7 @@ public class VideojuegoDAO {
 
         try (Connection conn = ConexionMySQL.connect(); PreparedStatement pStat = conn.prepareStatement(sql)) {
             pStat.setInt(1, idVideojuego);
-            pStat.setInt(1, idGenero);
+            pStat.setInt(2, idGenero);
 
             pStat.executeUpdate();
         } catch (SQLException e) {
@@ -91,7 +128,7 @@ public class VideojuegoDAO {
 
         try (Connection conn = ConexionMySQL.connect(); PreparedStatement pStat = conn.prepareStatement(sql)) {
             pStat.setInt(1, idVideojuego);
-            pStat.setInt(1, idPlataforma);
+            pStat.setInt(2, idPlataforma);
 
             pStat.executeUpdate();
         } catch (SQLException e) {

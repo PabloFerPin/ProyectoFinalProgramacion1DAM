@@ -5,23 +5,23 @@ import jakarta.persistence.*;
 
 public class GeneroDTO {
     @JsonIgnore
-    private int id_genero;
+    private Integer id_genero;
     public String nombre;
 
     public GeneroDTO() {
 
     }
 
-    public GeneroDTO(int id_genero, String nombre) {
+    public GeneroDTO(Integer id_genero, String nombre) {
         this.id_genero = id_genero;
         this.nombre = nombre;
     }
 
-    public int getId_genero() {
+    public Integer getId_genero() {
         return id_genero;
     }
 
-    public void setId_genero(int id_genero) {
+    public void setId_genero(Integer id_genero) {
         this.id_genero = id_genero;
     }
 
