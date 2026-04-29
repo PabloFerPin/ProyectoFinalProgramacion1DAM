@@ -9,12 +9,25 @@ public class ConexionMySQL {
     private static final String USER = "root";
     private static final String PASSWORD = "KFqboggCrXFSoqDZZVXGMfyYYDTjRvYJ";
 
+    private static Connection connection = null;
+
     public static Connection connect() {
         try {
-            return DriverManager.getConnection(URL, USER, PASSWORD);
+            if (connection == null || connection.isClosed()) {
+                connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            }
+            return connection;
         } catch (SQLException e) {
             throw new RuntimeException("Error al conectar con la base de datos", e);
         }
-
     }
+
+//    public static Connection connect() {
+//        try {
+//            return DriverManager.getConnection(URL, USER, PASSWORD);
+//        } catch (SQLException e) {
+//            throw new RuntimeException("Error al conectar con la base de datos", e);
+//        }
+//
+//    }
 }
