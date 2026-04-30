@@ -59,6 +59,6 @@ public class VideojuegoService {
     }
 
     public ArrayList<VideojuegoDTO> listarVideojuegos() {
-        return new ArrayList<VideojuegoDTO>();
+        return repo.obtenerVideojuegos();
     }
 }

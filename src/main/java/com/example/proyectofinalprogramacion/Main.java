@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 public class Main {
     public static void main(String[] args) {
-        VideojuegoDAO vDao = new VideojuegoDAO();
+//        VideojuegoDAO vDao = new VideojuegoDAO();
 
 //        int i = vDao.insertarVideojuego(new Videojuego(1, "test1Videojuego2", "Mi primo", LocalDate.of(2020, 3, 20), 20.2, false));
 //        System.out.println(i);

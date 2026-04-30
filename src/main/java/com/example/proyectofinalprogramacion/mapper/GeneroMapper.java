@@ -4,6 +4,8 @@ import com.example.proyectofinalprogramacion.dto.GeneroDTO;
 import com.example.proyectofinalprogramacion.entity.Genero;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class GeneroMapper {
     public Genero toEntity(GeneroDTO objGeneroDTO) {
