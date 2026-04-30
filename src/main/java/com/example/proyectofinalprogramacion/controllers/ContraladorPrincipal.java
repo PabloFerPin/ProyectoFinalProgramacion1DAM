@@ -2,10 +2,9 @@ package com.example.proyectofinalprogramacion.controllers;
 
 import com.example.proyectofinalprogramacion.dto.VideojuegoDTO;
 import com.example.proyectofinalprogramacion.service.VideojuegoService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping(path = "api/videojuegos")
@@ -16,10 +15,10 @@ public class ContraladorPrincipal {
         this.service = service;
     }
 
-//    @GetMapping
-//    public ArrayList<VideojuegosDTO> listar() {
-//
-//    }
+    @GetMapping
+    public ArrayList<VideojuegoDTO> listar() {
+        return service.listarVideojuegos();
+    }
 
     @PostMapping
     public VideojuegoDTO insertar(@RequestBody VideojuegoDTO objVideojuegoDTO) {
