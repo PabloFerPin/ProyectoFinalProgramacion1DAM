@@ -25,9 +25,10 @@ public class VideojuegoDAO {
 
             pStat.executeUpdate();
 
-            ResultSet rs = pStat.getGeneratedKeys();
-            while (rs.next()) {
-                idGenerado = rs.getInt(1);
+            try(ResultSet rs = pStat.getGeneratedKeys();) {
+                while (rs.next()) {
+                    idGenerado = rs.getInt(1);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -57,6 +58,25 @@ public class VideojuegoDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public int obtenerIdVideojuego(Videojuego objVideojuego) {
+        String sql = "SELECT id FROM tabla_videojuegos WHERE titulo = ?";
+        int id = 0;
+
+        try (Connection conn = ConexionMySQL.connect(); PreparedStatement pStat = conn.prepareStatement(sql)) {
+            pStat.setString(1, objVideojuego.getTitulo());
+
+            try (ResultSet rs = pStat.executeQuery()) {
+                while (rs.next()) {
+                    id = rs.getInt("id");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return id;
     }
 
     public int obtenerIdPlataforma(Plataforma objPlataforma) {
@@ -213,5 +233,58 @@ public class VideojuegoDAO {
         }
 
         return lista;
+    }
+
+    public void moficarVideojuego(String titulo, Videojuego objVideojuego) {
+        String sql = "UPDATE tabla_videojuegos SET titulo = ?, fecha_salida = ?, horas_jugadas = ?, completado = ?, desarrolladora = ? WHERE titulo = ?";
+
+        try(Connection conn = ConexionMySQL.connect(); PreparedStatement pStat = conn.prepareStatement(sql)) {
+            pStat.setString(1, objVideojuego.getTitulo());
+            pStat.setObject(2, objVideojuego.getFechaSalida());
+            pStat.setDouble(3, objVideojuego.getHorasJugadas());
+            pStat.setBoolean(4, objVideojuego.getCompletado());
+            pStat.setString(5, objVideojuego.getDesarrolladora());
+            pStat.setString(6, titulo);
+
+            pStat.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void eliminarVideojuego(String titulo) {
+        String sql = "DELETE FROM tabla_videojuegos WHERE titulo = ?";
+
+        try(Connection conn = ConexionMySQL.connect(); PreparedStatement pStat = conn.prepareStatement(sql)) {
+            pStat.setString(1, titulo);
+
+            pStat.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void eliminarVideojuegoGenero(int id_videojuego) {
+        String sql = "DELETE FROM tabla_videojuegos_generos WHERE id_videojuego = ?";
+
+        try(Connection conn = ConexionMySQL.connect(); PreparedStatement pStat = conn.prepareStatement(sql)) {
+            pStat.setInt(1, id_videojuego);
+
+            pStat.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void eliminarVideojuegoPlataforma(int id_videojuego) {
+        String sql = "DELETE FROM tabla_videojuegos_plataformas WHERE id_videojuego = ?";
+
+        try(Connection conn = ConexionMySQL.connect(); PreparedStatement pStat = conn.prepareStatement(sql)) {
+            pStat.setInt(1, id_videojuego);
+
+            pStat.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

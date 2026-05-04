@@ -26,36 +26,35 @@ public class VideojuegoService {
         this.pMapper = pMapper;
     }
 
-    public void insertarVideojuego(VideojuegoDTO objVideojuegoDTO) {
-        for (GeneroDTO x : objVideojuegoDTO.getGeneros()) {
-            Genero objGenero = gMapper.toEntity(x);
-            if (repo.obtenerIdGenero(objGenero) < 1) {
-                throw new RuntimeException("Genero no encontrado: " + x.getNombre());
-            }
-        }
-
-        for (PlataformaDTO y : objVideojuegoDTO.getPlataformas()) {
-            Plataforma objPlataforma = pMapper.toEntity(y);
-            if (repo.obtenerIdPlataforma(objPlataforma) < 1) {
-                throw new RuntimeException("Plataforma no encontrada: " + y.getNombre());
-            }
-        }
+    public VideojuegoDTO insertarVideojuego(VideojuegoDTO objVideojuegoDTO) {
+//        for (GeneroDTO x : objVideojuegoDTO.getGeneros()) {
+//            Genero objGenero = gMapper.toEntity(x);
+//            if (repo.obtenerIdGenero(objGenero) < 1) {
+//                throw new RuntimeException("Genero no encontrado: " + x.getNombre());
+//            }
+//        }
+//
+//        for (PlataformaDTO y : objVideojuegoDTO.getPlataformas()) {
+//            Plataforma objPlataforma = pMapper.toEntity(y);
+//            if (repo.obtenerIdPlataforma(objPlataforma) < 1) {
+//                throw new RuntimeException("Plataforma no encontrada: " + y.getNombre());
+//            }
+//        }
 
         Videojuego objVideojuego = vMapper.toEntity(objVideojuegoDTO);
         int idVideojuegoNuevo = repo.insertarVideojuego(objVideojuego);
 
-        //itero el mapper para sacra los id e insertar en tabla_videojuego_genero
-        for(GeneroDTO x : objVideojuegoDTO.getGeneros()) {
-            Genero objGenero = gMapper.toEntity(x);
-            int idGenero = repo.obtenerIdGenero(objGenero);
+        for(GeneroDTO x : objVideojuegoDTO.getGenerosDTO()) {
+            int idGenero = repo.obtenerIdGenero(gMapper.toEntity(x));
             repo.insertarVideojuegoGenero(idVideojuegoNuevo, idGenero);
         }
 
-        for (PlataformaDTO y : objVideojuegoDTO.getPlataformas()) {
-            Plataforma objPlataforma = pMapper.toEntity(y);
-            int idPlataforma = repo.obtenerIdPlataforma(objPlataforma);
+        for (PlataformaDTO x : objVideojuegoDTO.getPlataformasDTO()) {
+            int idPlataforma = repo.obtenerIdPlataforma(pMapper.toEntity(x));
             repo.insertarVideojuegoPlataforma(idVideojuegoNuevo, idPlataforma);
         }
+
+        return objVideojuegoDTO;
     }
 
     public ArrayList<VideojuegoDTO> listarVideojuegos() {
@@ -77,5 +76,30 @@ public class VideojuegoService {
         }
 
         return lista;
+    }
+
+    public VideojuegoDTO modificar(String titulo, VideojuegoDTO objVideojuegoDTO) {
+        Videojuego objVdieojuego = vMapper.toEntity(objVideojuegoDTO);
+        repo.moficarVideojuego(titulo, objVdieojuego);
+        int idVideojuegoModificado = repo.obtenerIdVideojuego(objVdieojuego);
+
+        repo.eliminarVideojuegoGenero(idVideojuegoModificado);
+        repo.eliminarVideojuegoPlataforma(idVideojuegoModificado);
+
+        for(GeneroDTO x : objVideojuegoDTO.getGenerosDTO()) {
+            int idGeneroParaInsertar = repo.obtenerIdGenero(gMapper.toEntity(x));
+            repo.insertarVideojuegoGenero(idVideojuegoModificado, idGeneroParaInsertar);
+        }
+
+        for(PlataformaDTO x : objVideojuegoDTO.getPlataformasDTO()) {
+            int idPlataformaParaInsertar = repo.obtenerIdPlataforma(pMapper.toEntity(x));
+            repo.insertarVideojuegoPlataforma(idVideojuegoModificado, idPlataformaParaInsertar);
+        }
+
+        return objVideojuegoDTO;
+    }
+
+    public VideojuegoDTO eliminarVideojuego(String titulo) {
+        return null;
     }
 }

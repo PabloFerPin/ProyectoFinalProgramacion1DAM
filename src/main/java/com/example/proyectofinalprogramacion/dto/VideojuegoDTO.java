@@ -85,7 +85,7 @@ public class VideojuegoDTO {
         this.completado = completado;
     }
 
-    public ArrayList<GeneroDTO> getGeneros() {
+    public ArrayList<GeneroDTO> getGenerosDTO() {
         return generos;
     }
 
@@ -93,7 +93,7 @@ public class VideojuegoDTO {
         this.generos = generos;
     }
 
-    public ArrayList<PlataformaDTO> getPlataformas() {
+    public ArrayList<PlataformaDTO> getPlataformasDTO() {
         return plataformas;
     }
 

@@ -23,8 +23,16 @@ public class ContraladorPrincipal {
 
     @PostMapping
     public VideojuegoDTO insertar(@RequestBody VideojuegoDTO objVideojuegoDTO) {
-        service.insertarVideojuego(objVideojuegoDTO);
+        return service.insertarVideojuego(objVideojuegoDTO);
+    }
 
-        return objVideojuegoDTO;
+    @PutMapping(path = "/{titulo}")
+    public VideojuegoDTO modificar(@PathVariable String titulo, @RequestBody VideojuegoDTO objVideojuegoDTO) {
+        return service.modificar(titulo, objVideojuegoDTO);
+    }
+
+    @DeleteMapping(path = "/{titulo}")
+    public VideojuegoDTO eliminar(@PathVariable String titulo) {
+        return service.eliminarVideojuego(titulo);
     }
 }
