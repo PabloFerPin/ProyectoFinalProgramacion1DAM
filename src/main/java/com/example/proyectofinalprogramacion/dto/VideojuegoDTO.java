@@ -1,5 +1,7 @@
 package com.example.proyectofinalprogramacion.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -85,19 +87,21 @@ public class VideojuegoDTO {
         this.completado = completado;
     }
 
+    @JsonProperty("generos")
     public ArrayList<GeneroDTO> getGenerosDTO() {
         return generos;
     }
 
-    public void setGeneros(ArrayList<GeneroDTO> generos) {
+    public void setGenerosDTO(ArrayList<GeneroDTO> generos) {
         this.generos = generos;
     }
 
+    @JsonProperty("plataformas")
     public ArrayList<PlataformaDTO> getPlataformasDTO() {
         return plataformas;
     }
 
-    public void setPlataformas(ArrayList<PlataformaDTO> plataformas) {
+    public void setPlataformasDTO(ArrayList<PlataformaDTO> plataformas) {
         this.plataformas = plataformas;
     }
 
