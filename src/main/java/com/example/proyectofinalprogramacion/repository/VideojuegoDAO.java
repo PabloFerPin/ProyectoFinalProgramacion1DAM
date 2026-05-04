@@ -1,34 +1,17 @@
 package com.example.proyectofinalprogramacion.repository;
 
 import com.example.proyectofinalprogramacion.config.ConexionMySQL;
-import com.example.proyectofinalprogramacion.dto.GeneroDTO;
-import com.example.proyectofinalprogramacion.dto.PlataformaDTO;
-import com.example.proyectofinalprogramacion.dto.VideojuegoDTO;
 import com.example.proyectofinalprogramacion.entity.Genero;
 import com.example.proyectofinalprogramacion.entity.Plataforma;
 import com.example.proyectofinalprogramacion.entity.Videojuego;
-import com.example.proyectofinalprogramacion.mapper.GeneroMapper;
-import com.example.proyectofinalprogramacion.mapper.PlataformaMapper;
-import com.example.proyectofinalprogramacion.mapper.VideojuegoMapper;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 @Repository
 public class VideojuegoDAO {
-    public final VideojuegoMapper vMapper;
-    public final GeneroMapper gMapper;
-    public final PlataformaMapper pMapper;
-
-    public VideojuegoDAO(VideojuegoMapper vMapper, GeneroMapper gMapper, PlataformaMapper pMapper) {
-        this.vMapper = vMapper;
-        this.gMapper = gMapper;
-        this.pMapper = pMapper;
-    }
-
     public int insertarVideojuego(Videojuego objVideojuego) {
         String sql = "INSERT INTO tabla_videojuegos (titulo, fecha_salida, horas_jugadas, completado, desarrolladora) VALUES (?, ?, ?, ?, ?)";
         int idGenerado = 0;
@@ -83,7 +66,7 @@ public class VideojuegoDAO {
         try (Connection conn = ConexionMySQL.connect(); PreparedStatement pStat = conn.prepareStatement(sql)) {
             pStat.setString(1, objPlataforma.getNombre());
 
-            try(ResultSet rs = pStat.executeQuery()) {
+            try (ResultSet rs = pStat.executeQuery()) {
                 while (rs.next()) {
                     id = rs.getInt("id");
                 }
@@ -102,7 +85,7 @@ public class VideojuegoDAO {
         try (Connection conn = ConexionMySQL.connect(); PreparedStatement pStat = conn.prepareStatement(sql)) {
             pStat.setString(1, objGenero.getNombre());
 
-            try(ResultSet rs = pStat.executeQuery()) {
+            try (ResultSet rs = pStat.executeQuery()) {
                 while (rs.next()) {
                     id = rs.getInt("id");
                 }
@@ -140,6 +123,7 @@ public class VideojuegoDAO {
         }
     }
 
+    /*
     public ArrayList<VideojuegoDTO> obtenerVideojuegos() {
         String sql = "SELECT v.id, v.titulo, v.desarrolladora, v.fecha_salida, v.horas_jugadas, v.completado,\n" +
                 "       GROUP_CONCAT(DISTINCT g.nombre) AS generos,\n" +
@@ -171,6 +155,60 @@ public class VideojuegoDAO {
                 lista.add(vMapper.toDTO(objVideojuego, listaGeneroDTO, listaPlataformaDTO));
             }
         } catch(SQLException e) {
+            e.printStackTrace();
+        }
+
+        return lista;
+    }
+     */
+
+    public ArrayList<Videojuego> obtenerVideojuegos() {
+        String sql = "SELECT * FROM tabla_videojuegos";
+        ArrayList<Videojuego> lista = new ArrayList<>();
+
+        try (Connection conn = ConexionMySQL.connect(); PreparedStatement pStat = conn.prepareStatement(sql); ResultSet rs = pStat.executeQuery()) {
+            while (rs.next()) {
+                lista.add(new Videojuego(rs.getInt("id"), rs.getString("titulo"), rs.getString("desarrolladora"), rs.getObject("fecha_salida", LocalDate.class), rs.getDouble("horas_jugadas"), rs.getBoolean("completado")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return lista;
+    }
+
+    public ArrayList<Genero> obtenerGenerosDeUnVideojuego(int idvideojuego) {
+        String sql = "SELECT g.id, g.nombre FROM tabla_generos g INNER JOIN tabla_videojuegos_generos vg ON g.id = vg.id_genero WHERE vg.id_videojuego = ?";
+        ArrayList<Genero> lista = new ArrayList<>();
+
+        try (Connection conn = ConexionMySQL.connect(); PreparedStatement pStat = conn.prepareStatement(sql)) {
+            pStat.setInt(1, idvideojuego);
+
+            try (ResultSet rs = pStat.executeQuery()) {
+                while (rs.next()) {
+                    lista.add(new Genero(rs.getInt("id"), rs.getString("nombre")));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return lista;
+    }
+
+    public ArrayList<Plataforma> obtenerPlataformasDeUnVideojuego(int idvideojuego) {
+        String sql = "SELECT p.id, p.nombre FROM tabla_plataformas p INNER JOIN tabla_videojuegos_plataformas vp ON p.id = vp.id_plataforma WHERE vp.id_videojuego = ?";
+        ArrayList<Plataforma> lista = new ArrayList<>();
+
+        try (Connection conn = ConexionMySQL.connect(); PreparedStatement pStat = conn.prepareStatement(sql)) {
+            pStat.setInt(1, idvideojuego);
+
+            try (ResultSet rs = pStat.executeQuery()) {
+                while (rs.next()) {
+                    lista.add(new Plataforma(rs.getInt("id"), rs.getString("nombre")));
+                }
+            }
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 

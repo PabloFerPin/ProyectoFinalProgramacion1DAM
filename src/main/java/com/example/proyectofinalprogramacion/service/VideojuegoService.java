@@ -59,6 +59,23 @@ public class VideojuegoService {
     }
 
     public ArrayList<VideojuegoDTO> listarVideojuegos() {
-        return repo.obtenerVideojuegos();
+        ArrayList<VideojuegoDTO> lista = new ArrayList<>();
+
+        for(Videojuego x : repo.obtenerVideojuegos()) {
+            ArrayList<GeneroDTO> listaGenerosDTO = new ArrayList<>();
+            ArrayList<PlataformaDTO> listaPlataformasDTO = new ArrayList<>();
+
+            for(Genero y : repo.obtenerGenerosDeUnVideojuego(x.getId_videojuego())) {
+                listaGenerosDTO.add(gMapper.toDTO(y));
+            }
+
+            for(Plataforma y : repo.obtenerPlataformasDeUnVideojuego(x.getId_videojuego())) {
+                listaPlataformasDTO.add(pMapper.toDTO(y));
+            }
+
+            lista.add(vMapper.toDTO(x, listaGenerosDTO, listaPlataformasDTO));
+        }
+
+        return lista;
     }
 }

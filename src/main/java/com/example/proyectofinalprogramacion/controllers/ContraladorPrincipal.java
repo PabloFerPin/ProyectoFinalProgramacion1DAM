@@ -6,8 +6,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
+@CrossOrigin(origins = "*")
 @RestController
-@RequestMapping(path = "api/videojuegos")
+@RequestMapping(path = "/api/videojuegos")
 public class ContraladorPrincipal {
     private final VideojuegoService service;
 
