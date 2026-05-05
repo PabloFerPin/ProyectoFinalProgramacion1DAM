@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
-@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(path = "/api/videojuegos")
 public class ContraladorPrincipal {
@@ -32,7 +31,7 @@ public class ContraladorPrincipal {
     }
 
     @DeleteMapping(path = "/{titulo}")
-    public VideojuegoDTO eliminar(@PathVariable String titulo) {
-        return service.eliminarVideojuego(titulo);
+    public void eliminar(@PathVariable String titulo) {
+        service.eliminarVideojuego(titulo);
     }
 }

@@ -25,7 +25,7 @@ public class VideojuegoDAO {
 
             pStat.executeUpdate();
 
-            try(ResultSet rs = pStat.getGeneratedKeys();) {
+            try(ResultSet rs = pStat.getGeneratedKeys()) {
                 while (rs.next()) {
                     idGenerado = rs.getInt(1);
                 }
@@ -60,12 +60,12 @@ public class VideojuegoDAO {
         }
     }
 
-    public int obtenerIdVideojuego(Videojuego objVideojuego) {
+    public int obtenerIdVideojuego(String titulo) {
         String sql = "SELECT id FROM tabla_videojuegos WHERE titulo = ?";
         int id = 0;
 
         try (Connection conn = ConexionMySQL.connect(); PreparedStatement pStat = conn.prepareStatement(sql)) {
-            pStat.setString(1, objVideojuego.getTitulo());
+            pStat.setString(1, titulo);
 
             try (ResultSet rs = pStat.executeQuery()) {
                 while (rs.next()) {

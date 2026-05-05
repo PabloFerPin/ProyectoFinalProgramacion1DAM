@@ -79,9 +79,8 @@ public class VideojuegoService {
     }
 
     public VideojuegoDTO modificar(String titulo, VideojuegoDTO objVideojuegoDTO) {
-        Videojuego objVdieojuego = vMapper.toEntity(objVideojuegoDTO);
-        repo.moficarVideojuego(titulo, objVdieojuego);
-        int idVideojuegoModificado = repo.obtenerIdVideojuego(objVdieojuego);
+        repo.moficarVideojuego(titulo, vMapper.toEntity(objVideojuegoDTO));
+        int idVideojuegoModificado = repo.obtenerIdVideojuego(titulo);
 
         repo.eliminarVideojuegoGenero(idVideojuegoModificado);
         repo.eliminarVideojuegoPlataforma(idVideojuegoModificado);
@@ -99,7 +98,11 @@ public class VideojuegoService {
         return objVideojuegoDTO;
     }
 
-    public VideojuegoDTO eliminarVideojuego(String titulo) {
-        return null;
+    public void eliminarVideojuego(String titulo) {
+        int idVideojuegoAEliminar = repo.obtenerIdVideojuego(titulo);
+
+        repo.eliminarVideojuego(titulo);
+        repo.eliminarVideojuegoGenero(idVideojuegoAEliminar);
+        repo.eliminarVideojuegoPlataforma(idVideojuegoAEliminar);
     }
 }
