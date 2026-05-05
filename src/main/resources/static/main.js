@@ -1,13 +1,8 @@
 async function obtenerVideojuegos() {
-    try {
-        const respuesta = await fetch("http://localhost:8080/api/videojuegos");
-        const arrayVideojuegos = await respuesta.json();
+    const respuesta = await fetch("http://localhost:8080/api/videojuegos");
+    const arrayVideojuegos = await respuesta.json();
 
-        crearTabla(arrayVideojuegos)
-    } catch (error) {
-        console.log(error.message)
-        return []
-    }
+    crearTabla(arrayVideojuegos)
 }
 
 function crearTabla(arrayVideojuegos) {

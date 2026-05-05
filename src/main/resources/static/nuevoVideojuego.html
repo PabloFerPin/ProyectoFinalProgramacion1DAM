@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Insertar Videojuego</title>
+</head>
+<body>
+<h1>Añadir videojuego</h1>
+
+<label>Título</label><br>
+<input type="text" id="titulo"><br><br>
+
+<label>Desarrolladora</label><br>
+<input type="text" id="desarrolladora"><br><br>
+
+<label>Fecha de salida</label><br>
+<input type="date" id="fechaSalida"><br><br>
+
+<label>Horas jugadas</label><br>
+<input type="number" id="horasJugadas" step="0.1"><br><br>
+
+<label>Completado</label>
+<input type="checkbox" id="completado"><br><br>
+
+<label>Géneros</label><br>
+<select id="selectGenero">
+    <option value="">-- Selecciona un género --</option>
+    <option>Acción</option>
+    <option>Aventura</option>
+    <option>RPG</option>
+    <option>FPS</option>
+    <option>Survival</option>
+    <option>Sandbox</option>
+    <option>Terror</option>
+    <option>Roguelike</option>
+    <option>Metroidvania</option>
+    <option>Souls-like</option>
+    <option>Open World</option>
+    <option>Stealth</option>
+    <option>Plataformas</option>
+    <option>Puzzle</option>
+    <option>Deportes</option>
+    <option>Carreras</option>
+    <option>Lucha</option>
+    <option>Simulación</option>
+    <option>MMORPG</option>
+    <option>Estrategia por turnos</option>
+    <option>Estrategia en tiempo real</option>
+    <option>Novela visual</option>
+    <option>Battle Royale</option>
+    <option>Hack and Slash</option>
+    <option>MOBA</option>
+    <option>Tower Defense</option>
+    <option>Idle</option>
+    <option>Remake</option>
+    <option>TPS</option>
+    <option>Musica y ritmo</option>
+</select>
+<button onclick="añadirGenero()">Añadir</button>
+<ul id="listaGeneros"></ul>
+<br>
+
+<label>Plataformas</label><br>
+<select id="selectPlataforma">
+    <option value="">-- Selecciona una plataforma --</option>
+    <option>PC</option>
+    <option>PlayStation 5</option>
+    <option>PlayStation 4</option>
+    <option>PlayStation 3</option>
+    <option>PlayStation 2</option>
+    <option>Xbox Series X</option>
+    <option>Xbox One</option>
+    <option>Xbox 360</option>
+    <option>Nintendo Switch</option>
+    <option>Nintendo 3DS</option>
+    <option>Game Boy Advance</option>
+    <option>Wii</option>
+    <option>Wii U</option>
+    <option>PSP</option>
+    <option>PS Vita</option>
+    <option>Sega Mega Drive</option>
+    <option>Nintendo 64</option>
+    <option>GameCube</option>
+</select>
+<button onclick="añadirPlataforma()">Añadir</button>
+<ul id="listaPlataformas"></ul>
+<br>
+
+<button onclick="enviar()">Guardar</button>
+
+<script src="insertar.js"></script>
+</body>
+</html>
+
+<script src="nuevoVideojuego.js"></script>
+</body>
+</html>
