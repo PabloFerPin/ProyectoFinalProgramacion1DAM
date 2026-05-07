@@ -235,6 +235,36 @@ public class VideojuegoDAO {
         return lista;
     }
 
+    public ArrayList<Genero> obtenerGenerosDisponibles() {
+        String sql = "SELECT * FROM tabla_generos";
+        ArrayList<Genero> lista = new ArrayList<>();
+
+        try(Connection conn = ConexionMySQL.connect(); PreparedStatement pStat = conn.prepareStatement(sql); ResultSet rs = pStat.executeQuery()) {
+            while(rs.next()) {
+                lista.add(new Genero(rs.getInt("id"), rs.getString("nombre")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return lista;
+    }
+
+    public ArrayList<Plataforma> obtenerPlataformasDisponibles() {
+        String sql = "SELECT * FROM tabla_plataformas";
+        ArrayList<Plataforma> lista = new ArrayList<>();
+
+        try(Connection conn = ConexionMySQL.connect(); PreparedStatement pStat = conn.prepareStatement(sql); ResultSet rs = pStat.executeQuery()) {
+            while(rs.next()) {
+                lista.add(new Plataforma(rs.getInt("id"), rs.getString("nombre")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return lista;
+    }
+
     public void moficarVideojuego(String titulo, Videojuego objVideojuego) {
         String sql = "UPDATE tabla_videojuegos SET titulo = ?, fecha_salida = ?, horas_jugadas = ?, completado = ?, desarrolladora = ? WHERE titulo = ?";
 
