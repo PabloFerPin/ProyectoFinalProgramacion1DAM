@@ -1,3 +1,54 @@
+async function obtenerGeneros() {
+    const respuesta = await fetch("http://localhost:8080/api/videojuegos/generos");
+    const arrayGeneros = await respuesta.json();
+
+    crearCheckboxsGeneros(arrayGeneros);
+}
+
+function crearCheckboxsGeneros(arrayGeneros) {
+    const divGeneros = document.getElementById("generos");
+
+    for(let x of arrayGeneros) {
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.value = x.nombre;
+        checkbox.id = "gen-" + x.nombre;
+
+        const label = document.createElement("label");
+        label.textContent = x.nombre + "   ";
+
+        divGeneros.appendChild(checkbox);
+        divGeneros.appendChild(label);
+    }
+}
+
+obtenerGeneros()
+
+async function obtenerPlataformas() {
+    const respuesta = await fetch("http://localhost:8080/api/videojuegos/plataformas");
+    const arrayPlataformas = await respuesta.json();
+
+    crearCheckboxsPlataformas(arrayPlataformas);
+}
+
+function crearCheckboxsPlataformas(arrayPlataformas) {
+    const divGeneros = document.getElementById("plataformas");
+
+    for(let x of arrayPlataformas) {
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.value = x.nombre;
+        checkbox.id = "pla-" + x.nombre;
+
+        const label = document.createElement("label");
+        label.textContent = x.nombre + "   ";
+
+        divGeneros.appendChild(checkbox);
+        divGeneros.appendChild(label);
+    }
+}
+
+obtenerPlataformas()
 
 const form = document.getElementById("form-videojuego");
 
@@ -16,12 +67,12 @@ form.addEventListener("submit", function (event) {
 
     if (generos.length === 0) {
         alert("Por favor, selecciona al menos un género.");
-        return; // Detiene la ejecución aquí
+        return;
     }
 
     if (plataformas.length === 0) {
         alert("Por favor, selecciona al menos una plataforma.");
-        return; // Detiene la ejecución aquí
+        return;
     }
 
     const titulo = document.getElementById("titulo").value;

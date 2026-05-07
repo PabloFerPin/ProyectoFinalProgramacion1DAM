@@ -14,6 +14,38 @@ function crearTabla(arrayVideojuegos) {
         const columnaTitulos = document.createElement("td")
         columnaTitulos.textContent = x.titulo;
 
+        const columnaFechaSalida = document.createElement("td")
+        columnaFechaSalida.textContent = x.fechaSalida;
+
+        const columnahorasJugadas = document.createElement("td")
+        columnahorasJugadas.textContent = x.horasJugadas;
+
+        const columnaCompletado = document.createElement("td")
+        columnaCompletado.textContent = x.completado;
+
+        const columnaDesarrolladora = document.createElement("td")
+        columnaDesarrolladora.textContent = x.desarrolladora;
+
+        const columnaBotonModificar = document.createElement("td")
+        const botonModificar = document.createElement("button")
+        botonModificar.textContent = "\u2699\uFE0F"
+        botonModificar.onclick = function () {
+            window.location.href = "modificarVideojuego.html?variableTemporal=" + x.id_videojuego
+        }
+        columnaBotonModificar.appendChild(botonModificar)
+
+        const columnaBotonEliminar = document.createElement("td")
+        const botonEliminar = document.createElement("button")
+        botonEliminar.textContent = "\u274C"
+        botonEliminar.onclick = function () {
+            fetch("http://localhost:8080/api/videojuegos/" + x.titulo, {
+                method: "Delete"
+            }).then(function () {
+                location.reload()
+            })
+        }
+        columnaBotonEliminar.appendChild(botonEliminar)
+
         const columnaGeneros = document.createElement("td")
         for (let y of x.generos) {
             columnaGeneros.textContent += y.nombre + ", "
@@ -29,6 +61,12 @@ function crearTabla(arrayVideojuegos) {
         fila.appendChild(columnaTitulos);
         fila.appendChild(columnaGeneros);
         fila.appendChild(columnaPlataforma);
+        fila.appendChild(columnaFechaSalida);
+        fila.appendChild(columnahorasJugadas);
+        fila.appendChild(columnaCompletado);
+        fila.appendChild(columnaDesarrolladora);
+        fila.appendChild(columnaBotonModificar)
+        fila.appendChild(columnaBotonEliminar)
         tabla.appendChild(fila);
     }
 }

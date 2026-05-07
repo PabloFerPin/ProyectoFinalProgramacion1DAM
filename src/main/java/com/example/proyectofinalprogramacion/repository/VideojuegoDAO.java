@@ -197,6 +197,25 @@ public class VideojuegoDAO {
         return lista;
     }
 
+    public Videojuego obtenerVideojuegoPorId(Integer id) {
+        String sql = "SELECT * FROM tabla_videojuegos WHERE id = ?";
+        Videojuego objVideojuego = null;
+
+        try (Connection conn = ConexionMySQL.connect(); PreparedStatement pStat = conn.prepareStatement(sql)) {
+            pStat.setInt(1, id);
+
+            try(ResultSet rs = pStat.executeQuery()) {
+                while (rs.next()) {
+                    objVideojuego = new Videojuego(rs.getInt("id"), rs.getString("titulo"), rs.getString("desarrolladora"), rs.getObject("fecha_salida", LocalDate.class), rs.getDouble("horas_jugadas"), rs.getBoolean("completado"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return objVideojuego;
+    }
+
     public ArrayList<Genero> obtenerGenerosDeUnVideojuego(int idvideojuego) {
         String sql = "SELECT g.id, g.nombre FROM tabla_generos g INNER JOIN tabla_videojuegos_generos vg ON g.id = vg.id_genero WHERE vg.id_videojuego = ?";
         ArrayList<Genero> lista = new ArrayList<>();

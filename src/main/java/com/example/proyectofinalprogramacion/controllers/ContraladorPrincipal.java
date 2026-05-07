@@ -31,6 +31,11 @@ public class ContraladorPrincipal {
         return service.listarPlataformasDisponibles();
     }
 
+    @GetMapping(path = "/{id}")
+    public VideojuegoDTO listarUnVideojuego(@PathVariable Integer id) {
+        return service.listarVideojuegoPorId(id);
+    }
+
     @PostMapping
     public VideojuegoDTO insertar(@RequestBody VideojuegoDTO objVideojuegoDTO) {
         return service.insertarVideojuego(objVideojuegoDTO);
