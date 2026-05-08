@@ -26,6 +26,7 @@ public class ContraladorPrincipal {
     public ArrayList<GeneroDTO> listarGeneros() {
         return service.listarGenerosDisponibles();
     }
+
     @GetMapping(path = "/plataformas")
     public ArrayList<PlataformaDTO> listarPlataformas() {
         return service.listarPlataformasDisponibles();
@@ -41,9 +42,9 @@ public class ContraladorPrincipal {
         return service.insertarVideojuego(objVideojuegoDTO);
     }
 
-    @PutMapping(path = "/{titulo}")
-    public VideojuegoDTO modificar(@PathVariable String titulo, @RequestBody VideojuegoDTO objVideojuegoDTO) {
-        return service.modificar(titulo, objVideojuegoDTO);
+    @PutMapping(path = "/{id}")
+    public VideojuegoDTO modificar(@PathVariable Integer id, @RequestBody VideojuegoDTO objVideojuegoDTO) {
+        return service.modificar(id, objVideojuegoDTO);
     }
 
     @DeleteMapping(path = "/{titulo}")

@@ -114,21 +114,20 @@ public class VideojuegoService {
         return lista;
     }
 
-    public VideojuegoDTO modificar(String titulo, VideojuegoDTO objVideojuegoDTO) {
-        repo.moficarVideojuego(titulo, vMapper.toEntity(objVideojuegoDTO));
-        int idVideojuegoModificado = repo.obtenerIdVideojuego(titulo);
+    public VideojuegoDTO modificar(Integer id, VideojuegoDTO objVideojuegoDTO) {
+        repo.moficarVideojuego(id, vMapper.toEntity(objVideojuegoDTO));
 
-        repo.eliminarVideojuegoGenero(idVideojuegoModificado);
-        repo.eliminarVideojuegoPlataforma(idVideojuegoModificado);
+        repo.eliminarVideojuegoGenero(id);
+        repo.eliminarVideojuegoPlataforma(id);
 
         for(GeneroDTO x : objVideojuegoDTO.getGenerosDTO()) {
             int idGeneroParaInsertar = repo.obtenerIdGenero(gMapper.toEntity(x));
-            repo.insertarVideojuegoGenero(idVideojuegoModificado, idGeneroParaInsertar);
+            repo.insertarVideojuegoGenero(id, idGeneroParaInsertar);
         }
 
         for(PlataformaDTO x : objVideojuegoDTO.getPlataformasDTO()) {
             int idPlataformaParaInsertar = repo.obtenerIdPlataforma(pMapper.toEntity(x));
-            repo.insertarVideojuegoPlataforma(idVideojuegoModificado, idPlataformaParaInsertar);
+            repo.insertarVideojuegoPlataforma(id, idPlataformaParaInsertar);
         }
 
         return objVideojuegoDTO;

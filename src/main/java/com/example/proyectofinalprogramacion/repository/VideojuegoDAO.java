@@ -284,8 +284,8 @@ public class VideojuegoDAO {
         return lista;
     }
 
-    public void moficarVideojuego(String titulo, Videojuego objVideojuego) {
-        String sql = "UPDATE tabla_videojuegos SET titulo = ?, fecha_salida = ?, horas_jugadas = ?, completado = ?, desarrolladora = ? WHERE titulo = ?";
+    public void moficarVideojuego(Integer id, Videojuego objVideojuego) {
+        String sql = "UPDATE tabla_videojuegos SET titulo = ?, fecha_salida = ?, horas_jugadas = ?, completado = ?, desarrolladora = ? WHERE id = ?";
 
         try(Connection conn = ConexionMySQL.connect(); PreparedStatement pStat = conn.prepareStatement(sql)) {
             pStat.setString(1, objVideojuego.getTitulo());
@@ -293,7 +293,7 @@ public class VideojuegoDAO {
             pStat.setDouble(3, objVideojuego.getHorasJugadas());
             pStat.setBoolean(4, objVideojuego.getCompletado());
             pStat.setString(5, objVideojuego.getDesarrolladora());
-            pStat.setString(6, titulo);
+            pStat.setInt(6, id);
 
             pStat.executeUpdate();
         } catch (SQLException e) {
