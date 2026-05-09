@@ -9,7 +9,11 @@ import com.example.proyectofinalprogramacion.entity.Videojuego;
 import com.example.proyectofinalprogramacion.mapper.*;
 import com.example.proyectofinalprogramacion.repository.VideojuegoDAO;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 @Service
@@ -139,5 +143,17 @@ public class VideojuegoService {
         repo.eliminarVideojuego(titulo);
         repo.eliminarVideojuegoGenero(idVideojuegoAEliminar);
         repo.eliminarVideojuegoPlataforma(idVideojuegoAEliminar);
+    }
+
+    public void importarArchivoCSV(MultipartFile archivo) {
+        try (BufferedReader bf = new BufferedReader(new InputStreamReader(archivo.getInputStream()));) {
+            String linea = bf.readLine();
+        while(linea != null) {
+            
+            linea = bf.readLine();
+        }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

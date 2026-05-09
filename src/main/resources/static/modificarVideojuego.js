@@ -125,7 +125,7 @@ form.addEventListener("submit", function (event) {
         plataformas
     };
 
-    fetch("http://localhost:8080/api/videojuegos" + idVideojuego, {
+    fetch("http://localhost:8080/api/videojuegos/" + idVideojuego, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(dto)

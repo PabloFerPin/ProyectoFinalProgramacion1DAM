@@ -5,6 +5,7 @@ import com.example.proyectofinalprogramacion.dto.PlataformaDTO;
 import com.example.proyectofinalprogramacion.dto.VideojuegoDTO;
 import com.example.proyectofinalprogramacion.service.VideojuegoService;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 
@@ -40,6 +41,11 @@ public class ContraladorPrincipal {
     @PostMapping
     public VideojuegoDTO insertar(@RequestBody VideojuegoDTO objVideojuegoDTO) {
         return service.insertarVideojuego(objVideojuegoDTO);
+    }
+
+    @PostMapping(path = "/csv")
+    public void importarCSV(@RequestParam("archivo") MultipartFile archivo) {
+        service.importarArchivoCSV(archivo);
     }
 
     @PutMapping(path = "/{id}")
