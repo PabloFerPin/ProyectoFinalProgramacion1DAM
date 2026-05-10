@@ -33,6 +33,13 @@
 </table><br>
 
 <button onclick = "window.location.href = 'nuevoVideojuego.html'">Crear videojuego</button>
+<br><br><br>
+<form id="formCsv">
+    <input type="file" id="archivoCsv" name="archivo" accept=".csv"><br>
+    <button type="button" onclick="importarCsv()">Importar</button> <br><br><br>
+</form>
+
+<button onclick="exportarCsv()">Exportar CSV</button>
 
 <script src="main.js"></script>
 </body>

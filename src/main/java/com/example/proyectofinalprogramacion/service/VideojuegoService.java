@@ -12,8 +12,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 @Service
@@ -48,7 +50,7 @@ public class VideojuegoService {
         Videojuego objVideojuego = vMapper.toEntity(objVideojuegoDTO);
         int idVideojuegoNuevo = repo.insertarVideojuego(objVideojuego);
 
-        for(GeneroDTO x : objVideojuegoDTO.getGenerosDTO()) {
+        for (GeneroDTO x : objVideojuegoDTO.getGenerosDTO()) {
             int idGenero = repo.obtenerIdGenero(gMapper.toEntity(x));
             repo.insertarVideojuegoGenero(idVideojuegoNuevo, idGenero);
         }
@@ -64,15 +66,15 @@ public class VideojuegoService {
     public ArrayList<VideojuegoDTO> listarVideojuegos() {
         ArrayList<VideojuegoDTO> lista = new ArrayList<>();
 
-        for(Videojuego x : repo.obtenerVideojuegos()) {
+        for (Videojuego x : repo.obtenerVideojuegos()) {
             ArrayList<GeneroDTO> listaGenerosDTO = new ArrayList<>();
             ArrayList<PlataformaDTO> listaPlataformasDTO = new ArrayList<>();
 
-            for(Genero y : repo.obtenerGenerosDeUnVideojuego(x.getId_videojuego())) {
+            for (Genero y : repo.obtenerGenerosDeUnVideojuego(x.getId_videojuego())) {
                 listaGenerosDTO.add(gMapper.toDTO(y));
             }
 
-            for(Plataforma y : repo.obtenerPlataformasDeUnVideojuego(x.getId_videojuego())) {
+            for (Plataforma y : repo.obtenerPlataformasDeUnVideojuego(x.getId_videojuego())) {
                 listaPlataformasDTO.add(pMapper.toDTO(y));
             }
 
@@ -87,11 +89,11 @@ public class VideojuegoService {
         ArrayList<GeneroDTO> listaGenerosDTO = new ArrayList<>();
         ArrayList<PlataformaDTO> listaPlataformasDTO = new ArrayList<>();
 
-        for(Genero x : repo.obtenerGenerosDeUnVideojuego(id)) {
+        for (Genero x : repo.obtenerGenerosDeUnVideojuego(id)) {
             listaGenerosDTO.add(gMapper.toDTO(x));
         }
 
-        for(Plataforma x : repo.obtenerPlataformasDeUnVideojuego(id)) {
+        for (Plataforma x : repo.obtenerPlataformasDeUnVideojuego(id)) {
             listaPlataformasDTO.add(pMapper.toDTO(x));
         }
 
@@ -101,7 +103,7 @@ public class VideojuegoService {
     public ArrayList<GeneroDTO> listarGenerosDisponibles() {
         ArrayList<GeneroDTO> lista = new ArrayList<>();
 
-        for(Genero x : repo.obtenerGenerosDisponibles()) {
+        for (Genero x : repo.obtenerGenerosDisponibles()) {
             lista.add(gMapper.toDTO(x));
         }
 
@@ -111,7 +113,7 @@ public class VideojuegoService {
     public ArrayList<PlataformaDTO> listarPlataformasDisponibles() {
         ArrayList<PlataformaDTO> lista = new ArrayList<>();
 
-        for(Plataforma x : repo.obtenerPlataformasDisponibles()) {
+        for (Plataforma x : repo.obtenerPlataformasDisponibles()) {
             lista.add(pMapper.toDTO(x));
         }
 
@@ -124,12 +126,12 @@ public class VideojuegoService {
         repo.eliminarVideojuegoGenero(id);
         repo.eliminarVideojuegoPlataforma(id);
 
-        for(GeneroDTO x : objVideojuegoDTO.getGenerosDTO()) {
+        for (GeneroDTO x : objVideojuegoDTO.getGenerosDTO()) {
             int idGeneroParaInsertar = repo.obtenerIdGenero(gMapper.toEntity(x));
             repo.insertarVideojuegoGenero(id, idGeneroParaInsertar);
         }
 
-        for(PlataformaDTO x : objVideojuegoDTO.getPlataformasDTO()) {
+        for (PlataformaDTO x : objVideojuegoDTO.getPlataformasDTO()) {
             int idPlataformaParaInsertar = repo.obtenerIdPlataforma(pMapper.toEntity(x));
             repo.insertarVideojuegoPlataforma(id, idPlataformaParaInsertar);
         }
@@ -145,13 +147,43 @@ public class VideojuegoService {
         repo.eliminarVideojuegoPlataforma(idVideojuegoAEliminar);
     }
 
-    public void importarArchivoCSV(MultipartFile archivo) {
-        try (BufferedReader bf = new BufferedReader(new InputStreamReader(archivo.getInputStream()));) {
+    public void importarArchivoCSV(byte[] archivo) {
+        try (BufferedReader bf = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(archivo)))) {
             String linea = bf.readLine();
-        while(linea != null) {
-            
-            linea = bf.readLine();
-        }
+            int numLinea = 1;
+
+            while (linea != null) {
+                String[] camposDeLaTabla = linea.trim().split("\\|");
+                ArrayList<GeneroDTO> listaGenerosDTO = new ArrayList<>();
+                ArrayList<PlataformaDTO> listaPlataformasDTO = new ArrayList<>();
+
+                try {
+                    Videojuego objVideojuego = new Videojuego(0, camposDeLaTabla[0], camposDeLaTabla[1], LocalDate.parse(camposDeLaTabla[2]), Double.parseDouble(camposDeLaTabla[3]), Boolean.parseBoolean(camposDeLaTabla[4]));
+                    for(String x : camposDeLaTabla[5].trim().split(",")) {
+                        listaGenerosDTO.add(gMapper.toDTO(new Genero(0, x)));
+                    }
+                    for(String x : camposDeLaTabla[6].trim().split(",")) {
+                        listaPlataformasDTO.add(pMapper.toDTO(new Plataforma(0, x)));
+                    }
+
+                    int idVideojuegoAInsertar = repo.insertarVideojuego(objVideojuego);
+                    for(GeneroDTO y : listaGenerosDTO) {
+                        int idGeneroAInsertar = repo.obtenerIdGenero(gMapper.toEntity(y));
+                        repo.insertarVideojuegoGenero(idVideojuegoAInsertar, idGeneroAInsertar);
+                    }
+                    for(PlataformaDTO y : listaPlataformasDTO) {
+                        int idPlataformaAInsertar = repo.obtenerIdPlataforma(pMapper.toEntity(y));
+                        repo.insertarVideojuegoPlataforma(idVideojuegoAInsertar, idPlataformaAInsertar);
+                    }
+                } catch(Exception e) {
+                    System.out.println("Error al insertar la linea numero " + numLinea);
+                }
+
+
+
+                linea = bf.readLine();
+                numLinea++;
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

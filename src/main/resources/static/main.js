@@ -72,3 +72,15 @@ function crearTabla(arrayVideojuegos) {
 }
 
 obtenerVideojuegos()
+
+function importarCsv() {
+    const archivo = document.getElementById("archivoCsv").files[0];
+
+    fetch("http://localhost:8080/api/videojuegos/csv",{
+        method: "POST",
+        headers: {"Content-Type": "text/csv"},
+        body: archivo
+    }).then(function temp() {
+        alert("CSV importado correctamente");
+    });
+}

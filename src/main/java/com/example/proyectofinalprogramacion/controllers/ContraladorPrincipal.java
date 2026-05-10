@@ -44,7 +44,7 @@ public class ContraladorPrincipal {
     }
 
     @PostMapping(path = "/csv")
-    public void importarCSV(@RequestParam("archivo") MultipartFile archivo) {
+    public void importarCSV(@RequestBody byte[] archivo) {
         service.importarArchivoCSV(archivo);
     }
 
