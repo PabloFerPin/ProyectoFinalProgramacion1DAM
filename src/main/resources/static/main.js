@@ -84,3 +84,13 @@ function importarCsv() {
         alert("CSV importado correctamente");
     });
 }
+
+async function exportarCsv() {
+    const respuesta = await fetch("http://localhost:8080/api/videojuegos/downloadCSV");
+    const blob = await respuesta.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "videojuegos.csv";
+    a.click();
+}
