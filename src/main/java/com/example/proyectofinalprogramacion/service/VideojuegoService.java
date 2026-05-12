@@ -189,7 +189,7 @@ public class VideojuegoService {
     public byte[] exportarArchivoCSV() {
         ArrayList<VideojuegoDTO> listaVideojuegosDTO = listarVideojuegos();
 
-        ArrayList<String> csv = new ArrayList<>();
+        String csv = "";
         for(VideojuegoDTO x : listaVideojuegosDTO) {
             String generosString = "";
             for (GeneroDTO y : x.getGenerosDTO()) {
@@ -203,10 +203,9 @@ public class VideojuegoService {
             }
             plataformasString = plataformasString.substring(0, plataformasString.length() - 1);
 
-            csv.add(x.getTitulo() + "|" + x.getDesarrolladora() + "|" + x.getFechaSalida() + "|" + x.getHorasJugadas() + "|" + x.getCompletado() + "|" + generosString + "|" + plataformasString + "\r\n");
+            csv += x.getTitulo() + "|" + x.getDesarrolladora() + "|" + x.getFechaSalida() + "|" + x.getHorasJugadas() + "|" + x.getCompletado() + "|" + generosString + "|" + plataformasString + "\r\n";
         }
 
-        String contenido = String.join("", csv);
-        return contenido.getBytes();
+        return csv.getBytes();
     }
 }
