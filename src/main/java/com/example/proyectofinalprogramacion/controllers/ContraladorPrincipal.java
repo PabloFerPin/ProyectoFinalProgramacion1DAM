@@ -5,7 +5,6 @@ import com.example.proyectofinalprogramacion.dto.PlataformaDTO;
 import com.example.proyectofinalprogramacion.dto.VideojuegoDTO;
 import com.example.proyectofinalprogramacion.service.VideojuegoService;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 
@@ -36,6 +35,11 @@ public class ContraladorPrincipal {
     @GetMapping(path = "/{id}")
     public VideojuegoDTO listarUnVideojuego(@PathVariable Integer id) {
         return service.listarVideojuegoPorId(id);
+    }
+
+    @GetMapping(path = "/downloadCSV")
+    public byte[] exportarCSV() {
+        return service.exportarArchivoCSV();
     }
 
     @PostMapping

@@ -9,7 +9,6 @@ import com.example.proyectofinalprogramacion.entity.Videojuego;
 import com.example.proyectofinalprogramacion.mapper.*;
 import com.example.proyectofinalprogramacion.repository.VideojuegoDAO;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -179,13 +178,35 @@ public class VideojuegoService {
                     System.out.println("Error al insertar la linea numero " + numLinea);
                 }
 
-
-
                 linea = bf.readLine();
                 numLinea++;
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public byte[] exportarArchivoCSV() {
+        ArrayList<VideojuegoDTO> listaVideojuegosDTO = listarVideojuegos();
+
+        ArrayList<String> csv = new ArrayList<>();
+        for(VideojuegoDTO x : listaVideojuegosDTO) {
+            String generosString = "";
+            for (GeneroDTO y : x.getGenerosDTO()) {
+                generosString += y.getNombre() + ",";
+            }
+            generosString = generosString.substring(0, generosString.length() - 1);
+
+            String plataformasString = "";
+            for (PlataformaDTO y : x.getPlataformasDTO()) {
+                plataformasString += y.getNombre() + ",";
+            }
+            plataformasString = plataformasString.substring(0, plataformasString.length() - 1);
+
+            csv.add(x.getTitulo() + "|" + x.getDesarrolladora() + "|" + x.getFechaSalida() + "|" + x.getHorasJugadas() + "|" + x.getCompletado() + "|" + generosString + "|" + plataformasString + "\r\n");
+        }
+
+        String contenido = String.join("", csv);
+        return contenido.getBytes();
     }
 }
