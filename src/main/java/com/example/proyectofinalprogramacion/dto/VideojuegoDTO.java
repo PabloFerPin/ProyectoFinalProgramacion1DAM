@@ -112,7 +112,7 @@ public class VideojuegoDTO {
                 ", titulo='" + titulo + '\'' +
                 ", desarrolladora='" + desarrolladora + '\'' +
                 ", fechaSalida=" + fechaSalida +
-                ", horasJuagas=" + horasJugadas +
+                ", horasJugadas=" + horasJugadas +
                 ", completado=" + completado +
                 '}';
     }

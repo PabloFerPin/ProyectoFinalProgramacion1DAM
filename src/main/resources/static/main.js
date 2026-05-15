@@ -42,7 +42,6 @@ function crearTabla(arrayVideojuegos) {
 
         const columnaBotonModificar = document.createElement("td");
         const botonModificar = document.createElement("button");
-        botonModificar.textContent = "✏️";
         botonModificar.innerHTML = '<i class="bi bi-pencil-square"></i>';
         botonModificar.onclick = function () {
             window.location.href = "modificarVideojuego.html?variableTemporal=" + x.id_videojuego;
