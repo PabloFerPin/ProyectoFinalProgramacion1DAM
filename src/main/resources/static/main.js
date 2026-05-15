@@ -54,7 +54,7 @@ function crearTabla(arrayVideojuegos) {
         botonEliminar.textContent = "🗑️";
         botonEliminar.innerHTML = '<i class="bi bi-trash3"></i>';
         botonEliminar.onclick = function () {
-            fetch("http://localhost:8080/api/videojuegos/" + x.titulo, {
+            fetch("http://localhost:8080/api/videojuegos/" + x.id_videojuego, {
                 method: "DELETE"
             }).then(function () {
                 location.reload();

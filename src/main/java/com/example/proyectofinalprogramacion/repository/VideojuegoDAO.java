@@ -37,48 +37,6 @@ public class VideojuegoDAO {
         return idGenerado;
     }
 
-    public void insertarPlataforma(Plataforma objPlataforma) {
-        String sql = "INSERT IGNORE INTO tabla_plataformas (nombre) VALUES (?)";
-
-        try (Connection conn = ConexionMySQL.connect(); PreparedStatement pStat = conn.prepareStatement(sql)) {
-            pStat.setString(1, objPlataforma.getNombre());
-
-            pStat.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void insertarGenero(Genero objGenero) {
-        String sql = "INSERT IGNORE INTO tabla_generos (nombre) VALUES (?)";
-        try (Connection conn = ConexionMySQL.connect(); PreparedStatement pStat = conn.prepareStatement(sql)) {
-            pStat.setString(1, objGenero.getNombre());
-
-            pStat.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public int obtenerIdVideojuego(String titulo) {
-        String sql = "SELECT id FROM tabla_videojuegos WHERE titulo = ?";
-        int id = 0;
-
-        try (Connection conn = ConexionMySQL.connect(); PreparedStatement pStat = conn.prepareStatement(sql)) {
-            pStat.setString(1, titulo);
-
-            try (ResultSet rs = pStat.executeQuery()) {
-                while (rs.next()) {
-                    id = rs.getInt("id");
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return id;
-    }
-
     public int obtenerIdPlataforma(Plataforma objPlataforma) {
         String sql = "SELECT id FROM tabla_plataformas WHERE nombre = ?";
         int id = 0;
@@ -142,45 +100,6 @@ public class VideojuegoDAO {
             e.printStackTrace();
         }
     }
-
-    /*
-    public ArrayList<VideojuegoDTO> obtenerVideojuegos() {
-        String sql = "SELECT v.id, v.titulo, v.desarrolladora, v.fecha_salida, v.horas_jugadas, v.completado,\n" +
-                "       GROUP_CONCAT(DISTINCT g.nombre) AS generos,\n" +
-                "       GROUP_CONCAT(DISTINCT p.nombre) AS plataformas\n" +
-                "FROM tabla_videojuegos v\n" +
-                "INNER JOIN tabla_videojuegos_generos vg ON v.id = vg.id_videojuego\n" +
-                "INNER JOIN tabla_generos g ON vg.id_genero = g.id\n" +
-                "INNER JOIN tabla_videojuegos_plataformas vp ON v.id = vp.id_videojuego\n" +
-                "INNER JOIN tabla_plataformas p ON vp.id_plataforma = p.id\n" +
-                "GROUP BY v.id";
-        ArrayList<VideojuegoDTO> lista = new ArrayList<>();
-
-        try(Connection conn = ConexionMySQL.connect(); PreparedStatement pStat = conn.prepareStatement(sql); ResultSet rs = pStat.executeQuery()) {
-            while(rs.next()) {
-                String[] listaGeneros = rs.getString("generos").split(",");
-                ArrayList<GeneroDTO> listaGeneroDTO = new ArrayList<>();
-                for(String x : listaGeneros) {
-                    listaGeneroDTO.add(gMapper.toDTO(new Genero(0, x)));
-                }
-
-                String[] listaPlataformas = rs.getString("plataformas").split(",");
-                ArrayList<PlataformaDTO> listaPlataformaDTO = new ArrayList<>();
-                for(String x : listaPlataformas) {
-                    listaPlataformaDTO.add(pMapper.toDTO(new Plataforma(0, x)));
-                }
-
-                Videojuego objVideojuego = new Videojuego(rs.getInt("id"), rs.getString("titulo"), rs.getString("desarrolladora"), rs.getObject("fecha_salida", LocalDate.class) , rs.getDouble("horas_jugadas"), rs.getBoolean("completado"));
-                vMapper.toDTO(objVideojuego, listaGeneroDTO, listaPlataformaDTO);
-                lista.add(vMapper.toDTO(objVideojuego, listaGeneroDTO, listaPlataformaDTO));
-            }
-        } catch(SQLException e) {
-            e.printStackTrace();
-        }
-
-        return lista;
-    }
-     */
 
     public ArrayList<Videojuego> obtenerVideojuegos() {
         String sql = "SELECT * FROM tabla_videojuegos";
@@ -301,11 +220,11 @@ public class VideojuegoDAO {
         }
     }
 
-    public void eliminarVideojuego(String titulo) {
-        String sql = "DELETE FROM tabla_videojuegos WHERE titulo = ?";
+    public void eliminarVideojuego(int id) {
+        String sql = "DELETE FROM tabla_videojuegos WHERE id = ?";
 
         try(Connection conn = ConexionMySQL.connect(); PreparedStatement pStat = conn.prepareStatement(sql)) {
-            pStat.setString(1, titulo);
+            pStat.setInt(1, id);
 
             pStat.executeUpdate();
         } catch (SQLException e) {

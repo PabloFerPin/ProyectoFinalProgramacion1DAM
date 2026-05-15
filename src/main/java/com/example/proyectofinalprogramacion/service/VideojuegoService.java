@@ -19,10 +19,10 @@ import java.util.ArrayList;
 
 @Service
 public class VideojuegoService {
-    public final VideojuegoDAO repo;
-    public final VideojuegoMapper vMapper;
-    public final GeneroMapper gMapper;
-    public final PlataformaMapper pMapper;
+    private final VideojuegoDAO repo;
+    private final VideojuegoMapper vMapper;
+    private final GeneroMapper gMapper;
+    private final PlataformaMapper pMapper;
 
     public VideojuegoService(VideojuegoDAO repo, VideojuegoMapper vMapper, GeneroMapper gMapper, PlataformaMapper pMapper) {
         this.repo = repo;
@@ -32,20 +32,6 @@ public class VideojuegoService {
     }
 
     public VideojuegoDTO insertarVideojuego(VideojuegoDTO objVideojuegoDTO) {
-//        for (GeneroDTO x : objVideojuegoDTO.getGeneros()) {
-//            Genero objGenero = gMapper.toEntity(x);
-//            if (repo.obtenerIdGenero(objGenero) < 1) {
-//                throw new RuntimeException("Genero no encontrado: " + x.getNombre());
-//            }
-//        }
-//
-//        for (PlataformaDTO y : objVideojuegoDTO.getPlataformas()) {
-//            Plataforma objPlataforma = pMapper.toEntity(y);
-//            if (repo.obtenerIdPlataforma(objPlataforma) < 1) {
-//                throw new RuntimeException("Plataforma no encontrada: " + y.getNombre());
-//            }
-//        }
-
         Videojuego objVideojuego = vMapper.toEntity(objVideojuegoDTO);
         int idVideojuegoNuevo = repo.insertarVideojuego(objVideojuego);
 
@@ -138,12 +124,10 @@ public class VideojuegoService {
         return objVideojuegoDTO;
     }
 
-    public void eliminarVideojuego(String titulo) {
-        int idVideojuegoAEliminar = repo.obtenerIdVideojuego(titulo);
-
-        repo.eliminarVideojuego(titulo);
-        repo.eliminarVideojuegoGenero(idVideojuegoAEliminar);
-        repo.eliminarVideojuegoPlataforma(idVideojuegoAEliminar);
+    public void eliminarVideojuego(int id) {
+        repo.eliminarVideojuego(id);
+        repo.eliminarVideojuegoGenero(id);
+        repo.eliminarVideojuegoPlataforma(id);
     }
 
     public void importarArchivoCSV(byte[] archivo) {

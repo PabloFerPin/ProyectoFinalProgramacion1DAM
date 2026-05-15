@@ -10,10 +10,10 @@ import java.util.ArrayList;
 
 @RestController
 @RequestMapping(path = "/api/videojuegos")
-public class ContraladorPrincipal {
+public class ControladorPrincipal {
     private final VideojuegoService service;
 
-    public ContraladorPrincipal(VideojuegoService service) {
+    public ControladorPrincipal(VideojuegoService service) {
         this.service = service;
     }
 
@@ -57,8 +57,8 @@ public class ContraladorPrincipal {
         return service.modificar(id, objVideojuegoDTO);
     }
 
-    @DeleteMapping(path = "/{titulo}")
-    public void eliminar(@PathVariable String titulo) {
-        service.eliminarVideojuego(titulo);
+    @DeleteMapping(path = "/{id}")
+    public void eliminar(@PathVariable int id) {
+        service.eliminarVideojuego(id);
     }
 }
