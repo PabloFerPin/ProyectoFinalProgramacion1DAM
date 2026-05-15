@@ -2,7 +2,6 @@ package com.example.proyectofinalprogramacion.mapper;
 
 import com.example.proyectofinalprogramacion.dto.GeneroDTO;
 import com.example.proyectofinalprogramacion.dto.PlataformaDTO;
-import com.example.proyectofinalprogramacion.entity.Plataforma;
 import org.springframework.stereotype.Component;
 import com.example.proyectofinalprogramacion.dto.VideojuegoDTO;
 import com.example.proyectofinalprogramacion.entity.Videojuego;
