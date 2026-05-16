@@ -15,6 +15,5 @@ public class ConexionMySQL {
         } catch (SQLException e) {
             throw new RuntimeException("Error al conectar con la base de datos", e);
         }
-
     }
 }
